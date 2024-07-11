@@ -2,6 +2,7 @@ import React from "react";
 import Question from "./Question";
 
 export default function Results ({ score, totalQuestions, onReview}) {
+    // Calcula a porcentagem de acertos
     const percentage = (score /totalQuestions ) * 100;
 
 
