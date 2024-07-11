@@ -1,13 +1,14 @@
 import React from 'react';
 
-export default function Question ({ question, options, handleAnswer, currentQuestionIndex, setCurrentQuestionIndex })  {
+export default function Question ({ question, options, handleAnswer, currentQuestionIndex, setCurrentQuestionIndex, markedQuestion })  {
+
     return (
         <div>
             <div className='container'>
                 <h2>{question}</h2>
                 <div className='options'>
                     {options.map((option, index) => (
-                        <button key={index} onClick={() => handleAnswer(option)}>
+                        <button className={markedQuestion === option ? "selected" : ""} key={index} onClick={() => handleAnswer(option)}>
                             {option}
                         </button>
                     ))}

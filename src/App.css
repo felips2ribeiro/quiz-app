@@ -27,6 +27,13 @@
     font-size: 28px;
   }
 
+  .container .options .selected{
+    background-color: #e9ebec;
+  }
+
+  .container .options .selected:hover{
+    background-color: #dfdfdf;
+  }
 
   .container .options button{
     width: 100%;
@@ -57,9 +64,11 @@
     margin: 10px;
   }
   
+  
   .navigation button{
     font-size: 30px;
     background-color: transparent;
     color: black;
     width: 100px;
   }
+

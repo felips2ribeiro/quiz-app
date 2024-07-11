@@ -9,11 +9,31 @@ export default function Quiz ()  {
     const [showResults, setShowResults] = useState(false);
 
 
+
     const handleAnswer = (selectedOption) => {
-        if (selectedOption === questionsData[currentQuestionIndex].answer && questionsData[currentQuestionIndex].boolean === false) {
-            setScore(score + 1);
-            questionsData[currentQuestionIndex].boolean = true
-            console.log("acertou" + (score + 1))
+
+        const currentQuestion = questionsData[currentQuestionIndex];
+
+        if (currentQuestion.marked === "") {
+            // Primeira marcação da resposta
+            currentQuestion.marked = selectedOption;
+            if (currentQuestion.answer === selectedOption) {
+                setScore(score + 1);
+            }
+        } else {
+            // Alteração da resposta marcada
+            if (currentQuestion.marked !== selectedOption) {
+                // Se a resposta marcada anteriormente estava correta, diminui o ponto
+                if (currentQuestion.marked === currentQuestion.answer) {
+                    setScore(score - 1);
+                }
+                // Marca a nova resposta
+                currentQuestion.marked = selectedOption;
+                // Se a nova resposta está correta, adiciona o ponto
+                if (selectedOption === currentQuestion.answer) {
+                    setScore(score + 1);
+                }
+            }
         }
 
         const nextQuestionIndex = currentQuestionIndex + 1;
@@ -35,6 +55,7 @@ export default function Quiz ()  {
         handleAnswer={handleAnswer}
         currentQuestionIndex={currentQuestionIndex}
         setCurrentQuestionIndex={setCurrentQuestionIndex}
+        markedQuestion={questionsData[currentQuestionIndex].marked}
         />
     );
     
