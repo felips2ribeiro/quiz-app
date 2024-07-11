@@ -1,0 +1,50 @@
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+.App {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background-color: #282c34;
+    color: white;
+    font-family: Arial, sans-serif;
+    box-sizing: border-box;
+  }
+  
+  .container {
+    background-color: white;
+    border: 10px solid black;
+    padding: 5%;
+  }
+
+  .container h2 {
+    color: black;
+    text-align: left;
+    margin-bottom: 30px;
+    font-size: 28px;
+  }
+
+
+  .container .options button{
+    width: 100%;
+    padding: 20px;
+    background-color: transparent;
+    margin-bottom: 1px;
+    border-width: 0.5px;
+    text-align: left;
+    font-size: 16px;
+  }
+
+  .container .options button:hover{
+    background-color: #e9ebec;
+  }
+
+  .container p{
+    font-size: 20px;
+    color: black;
+  }
+  
+  
