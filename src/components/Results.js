@@ -1,6 +1,6 @@
 import React from "react";
 
-export default Results = ({ score, totalQuestions}) => {
+export default function Results ({ score, totalQuestions}) {
     const percentage = (score /totalQuestions ) * 100;
 
     return (
