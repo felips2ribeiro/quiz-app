@@ -1,20 +1,20 @@
 import React, {useState} from "react";
 import Question from "./Question";
 import Results from "./Results";
-import questionsData from '../data/questions.json'
+import questionsData from '../data/questions.js'
 
-export default Quiz = () => {
+export default function Quiz ()  {
     const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
     const [score, setScore] = useState(0);
     const [showResults, setShowResults] = useState(false);
 
     const handleAnswer = (selectedOption) => {
-        if (selectedOption === questionsData[currentQuestionIndex].correct) {
+        if (selectedOption === questionsData[currentQuestionIndex].answer) {
             setScore(score + 1);
         }
 
         const nextQuestionIndex = currentQuestionIndex + 1;
-        if (nextQuestionIndex < questionsData.lenght) {
+        if (nextQuestionIndex < questionsData.length) {
             setCurrentQuestionIndex(nextQuestionIndex)
         } else {
             setShowResults(true)
@@ -22,7 +22,7 @@ export default Quiz = () => {
     };
 
     if (showResults) {
-        return <Results score={score} totalQuestions={questionsData.lenght} />;
+        return <Results score={score} totalQuestions={questionsData.length} />;
     }
 
     return (
@@ -31,4 +31,5 @@ export default Quiz = () => {
         handleAnswer={handleAnswer}
         />
     );
+    
 };
