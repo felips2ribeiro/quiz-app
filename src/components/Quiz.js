@@ -30,11 +30,17 @@ export default function Quiz() {
         }
 
         const nextQuestionIndex = currentQuestionIndex + 1;
+        const allQuestionsAnswered = questionsData.every(question => question.marked !== "");
 
         if (nextQuestionIndex < questionsData.length) {
             setCurrentQuestionIndex(nextQuestionIndex);
         } else {
-            setShowResults(true);
+            if(allQuestionsAnswered){
+                setShowResults(true);
+            }else{
+                alert("Responda todas as questões")
+            }
+            
         }
     };
 
