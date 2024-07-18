@@ -1,7 +1,7 @@
 import React, { useState } from "react";
-import Question from "./Question";
-import Results from "./Results";
-import questionsData from '../data/questions.js';
+import Question from "./Question.jsx";
+import Results from "./Results.jsx";
+import questionsData from '../data/questions.jsx';
 
 export default function Quiz() {
     const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
