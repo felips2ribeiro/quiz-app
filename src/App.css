@@ -101,6 +101,42 @@ button:disabled {
   width: 300px;
 }
 
+.container-quiz-creator{
+  background-color: white;
+  border: 10px solid black;
+  padding: 5%;
+}
+
+
+.form-quizcreator{
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-bottom: 10px;
+  width: 100%;
+}
+
+.form-quizcreator .textarea-quizcreator{
+  padding: 10px;
+  resize: none;
+}
+
+.form-quizcreator .input-div-quiz-creator .input-quizcreator{
+  padding: 10px;
+  width: 100%;
+}
+
+.form-quizcreator .input-div-quiz-creator{
+  display: flex;
+  gap: 10px;
+  width: 100%;
+
+}
+
+.form-quizcreator .input-div-quiz-creator label{
+  color: black;
+}
+
 @media screen and (max-width: 768px){
   .navigation button{
     margin-top: 20px;
@@ -109,4 +145,12 @@ button:disabled {
     color: black;
     width: 150px;
   }
+}
+
+.container .h1-panel{
+  color: black;
+} 
+
+.container strong{
+  color: black;
 }
