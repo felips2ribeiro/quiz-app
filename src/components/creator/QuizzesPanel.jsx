@@ -36,7 +36,7 @@ export default function QuizzesPanel(){
         }
 
     return (
-        <div className="container">
+        <div className="">
             <h1 className="h1-panel">Quizzes Criados</h1>
             <ul>
                 {quizzes.map(quiz => (

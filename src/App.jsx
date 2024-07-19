@@ -1,15 +1,16 @@
 import React from 'react';
 import Quiz from './components/Quiz';
-import './App.css';
 import QuizCreator from './components/creator/QuizCreator';
 import QuizzesPanel from './components/creator/QuizzesPanel';
+import { BrowserRouter as Router, Route, Routes} from 'react-router-dom';
 
 function App() {
   return (
-    <div className="App">
-      <QuizCreator/>
-      <QuizzesPanel/>
-    </div>
+    <Router>
+        <Routes>
+          <Route path='/' Component={QuizCreator}></Route>
+        </Routes>
+    </Router>
   );
 }
 
