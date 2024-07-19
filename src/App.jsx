@@ -1,14 +1,13 @@
 import React from 'react';
-import Quiz from './components/Quiz';
-import QuizCreator from './components/creator/QuizCreator';
-import QuizzesPanel from './components/creator/QuizzesPanel';
 import { BrowserRouter as Router, Route, Routes} from 'react-router-dom';
+import Home from './components/creator/Home';
+import '@fontsource/roboto';
 
 function App() {
   return (
     <Router>
         <Routes>
-          <Route path='/' Component={QuizCreator}></Route>
+          <Route path='/' Component={Home}></Route>
         </Routes>
     </Router>
   );
