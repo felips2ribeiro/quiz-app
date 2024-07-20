@@ -1,11 +1,18 @@
 import React, { useState } from 'react';
-import { db, collection, addDoc} from './firebase/firebaseConfig';
-
+import { db, collection, addDoc, query, where, getDocs} from './firebase/firebaseConfig';
+import { useNavigate } from 'react-router-dom';
 
 export default function EmailInput({ onEmailTyped }) {
   const [email, setEmail] = useState('');
   const [isValid, setIsValid] = useState(null);
-  const [newEmail, setNewEmail] = useState(true)
+  const navigate = useNavigate();
+
+
+  const checkIfEmailExists = async (email) => {
+    const q = query(collection(db, 'users'), where('email', '==', email));
+    const querySnapshot = await getDocs(q);
+    return !querySnapshot.empty;
+  };
 
   const validateEmail = (value) => {
     if (value.includes('@') && value.trim() !== '') {
@@ -25,10 +32,16 @@ export default function EmailInput({ onEmailTyped }) {
     e.preventDefault();
     if (isValid) {
       try {
-        await addDoc(collection(db, 'users'), { email });
-        onEmailTyped(email);
+        const exists = await checkIfEmailExists(email)
+        if(exists) {
+            onEmailTyped(email)
+        }else{
+            await addDoc(collection(db, 'users'), { email });
+            onEmailTyped(email);
+        }
       } catch (error) {
         console.error("Erro ao adicionar o e-mail: ", error);
+
       }
     }
   };
