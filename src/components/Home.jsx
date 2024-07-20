@@ -9,7 +9,7 @@ export default function Home() {
   const [isEmailTyped, setIsEmailTyped] = useState(false);
   const [creatorEmail, setCreatorEmail] = useState('');
 
-    console.log(email)
+
   useEffect(() => {
     if (email) {
       setCreatorEmail(email);

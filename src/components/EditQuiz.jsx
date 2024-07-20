@@ -1,28 +1,27 @@
 import React, { useState, useEffect } from 'react';
-import { db, collection, addDoc, doc, getDocs, updateDoc } from './firebase/firebaseConfig'; // Assumindo que você exporta o db do firebase.js
+import { db, doc, getDoc, updateDoc } from './firebase/firebaseConfig'; // Assumindo que você exporta o db do firebase.js
 import { useNavigate, useParams } from 'react-router-dom'; // Importa o hook useNavigate e useParams para navegação e parâmetros de URL
 import { useEmail } from '../context/EmailContext';
 
-export default function CreateOrEditQuiz({ creatorEmail }) {
+export default function EditQuiz() {
     const [quizTitle, setQuizTitle] = useState('');
     const [quizDescription, setQuizDescription] = useState('');
     const [questions, setQuestions] = useState([{ questionText: '', answers: ['', '', '', ''], correctAnswerIndex: 0 }]);
-    const [isEditing, setIsEditing] = useState(false);
+    const [isEditing, setIsEditing] = useState(true);
     const { email } = useEmail();
-    const navigate = useNavigate(); // Cria a instância do hook useNavigate
+    const navigate = useNavigate();
     const { quizId } = useParams(); // Pega o quizId da URL
-    console.log(email)
+
     useEffect(() => {
         const fetchQuiz = async () => {
             try {
                 const quizDocRef = doc(db, 'quizzes', quizId);
-                const quizDoc = await getDocs(quizDocRef);
+                const quizDoc = await getDoc(quizDocRef);
                 if (quizDoc.exists()) {
                     const quizData = quizDoc.data();
                     setQuizTitle(quizData.title);
                     setQuizDescription(quizData.description);
                     setQuestions(quizData.questions);
-                    setIsEditing(true);
                 } else {
                     console.log('Quiz não encontrado');
                 }
@@ -65,30 +64,16 @@ export default function CreateOrEditQuiz({ creatorEmail }) {
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-            if (isEditing) {
-                // Atualiza o quiz existente
-                const quizDocRef = doc(db, 'quizzes', quizId);
-                console.log(quizDocRef)
-                await updateDoc(quizDocRef, {
-                    title: quizTitle,
-                    description: quizDescription,
-                    questions,
-                    updatedAt: new Date()
-                });
-                alert('Quiz atualizado com sucesso!');
-            } else {
-                console.log("entrei")
-                // Cria um novo quiz
-                await addDoc(collection(db, 'quizzes'), {
-                    title: quizTitle,
-                    description: quizDescription,
-                    emailCreator: email,
-                    questions,
-                    createdAt: new Date(),
-                });
-                alert('Quiz criado com sucesso!');
-            }
-            navigate('/'); // Navega para a página inicial após criar ou atualizar o quiz
+            // Atualiza o quiz existente
+            const quizDocRef = doc(db, 'quizzes', quizId);
+            await updateDoc(quizDocRef, {
+                title: quizTitle,
+                description: quizDescription,
+                questions,
+                updatedAt: new Date()
+            });
+            alert('Quiz atualizado com sucesso!');
+            navigate('/'); // Navega para a página inicial após atualizar o quiz
         } catch (error) {
             console.error('Erro ao salvar quiz:', error);
             alert('Erro ao salvar quiz.');
@@ -99,12 +84,12 @@ export default function CreateOrEditQuiz({ creatorEmail }) {
         <section className='p-20'>
             <div className="bg-white p-10 rounded-xl shadow-lg relative">
                 <button
-                    onClick={() => navigate("/")} // Navega para a página anterior
+                    onClick={() => navigate("/")} // Navega para a página inicial
                     className="absolute top-4 right-4 px-4 py-2 bg-gray-300 text-black rounded hover:bg-gray-400"
                 >
                     Voltar
                 </button>
-                <h1 className="text-3xl mb-4">{isEditing ? 'Editar Quiz' : 'Criar Quiz'}</h1>
+                <h1 className="text-3xl mb-4">Editar Quiz</h1>
                 <form onSubmit={handleSubmit}>
                     <div className="mb-4">
                         <label htmlFor="title" className="block mb-2 text-sm font-medium text-gray-700">Título do Quiz</label>
@@ -150,7 +135,7 @@ export default function CreateOrEditQuiz({ creatorEmail }) {
                                         type="text"
                                         value={answer}
                                         onChange={(e) => handleAnswerChange(questionIndex, answerIndex, e)}
-                                        className="p-2  border border-gray-300 rounded-lg w-full"
+                                        className="p-2 border border-gray-300 rounded-lg w-full"
                                         required
                                     />
                                     <div className="mt-2 flex">
@@ -180,7 +165,7 @@ export default function CreateOrEditQuiz({ creatorEmail }) {
                             type="submit"
                             className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
                         >
-                            {isEditing ? 'Salvar Alterações' : 'Salvar Quiz'}
+                            Salvar Alterações
                         </button>
                     </div>
                 </form>
