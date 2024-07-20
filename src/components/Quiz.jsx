@@ -23,7 +23,7 @@ export default function Quiz() {
                     const quizData = quizDoc.data();
                     setQuizTitle(quizData.title);
                     setQuizDescription(quizData.description);
-                    setQuestions(quizData.questions || []);
+                    setQuestions(quizData.questions || []); // Garantir que questions é um array
                 } else {
                     console.log('Quiz não encontrado');
                 }
@@ -42,7 +42,7 @@ export default function Quiz() {
     };
 
     const handleSubmitAnswer = () => {
-        const correctAnswerIndex = questions[currentQuestionIndex].correctAnswerIndex;
+        const correctAnswerIndex = questions[currentQuestionIndex]?.correctAnswerIndex;
         if (selectedAnswer === correctAnswerIndex) {
             setScore(score + 1);
         }
@@ -61,6 +61,8 @@ export default function Quiz() {
         setIsFinished(false);
     };
 
+    const currentQuestion = questions[currentQuestionIndex] || {};
+
     return (
         <section className='p-20'>
             <div className="bg-white p-10 rounded-xl shadow-lg relative">
@@ -75,8 +77,8 @@ export default function Quiz() {
                 {!isFinished ? (
                     <div>
                         <h2 className="text-2xl mb-4">Pergunta {currentQuestionIndex + 1}</h2>
-                        <p className="mb-4">{questions[currentQuestionIndex].questionText}</p>
-                        {questions[currentQuestionIndex].answers.map((answer, index) => (
+                        <p className="mb-4">{currentQuestion.questionText || 'Pergunta não encontrada'}</p>
+                        {currentQuestion.answers?.map((answer, index) => (
                             <div key={index} className="mb-2 flex items-center gap-10 mt-2">
                                 <input
                                     type="radio"
