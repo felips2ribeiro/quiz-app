@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { db, doc, getDoc, updateDoc } from './firebase/firebaseConfig'; // Assumindo que você exporta o db do firebase.js
+import { db, doc, getDoc, updateDoc, deleteDoc } from './firebase/firebaseConfig'; // Assumindo que você exporta o db do firebase.js
 import { useNavigate, useParams } from 'react-router-dom'; // Importa o hook useNavigate e useParams para navegação e parâmetros de URL
 import { useEmail } from '../context/EmailContext';
 
@@ -60,6 +60,22 @@ export default function EditQuiz() {
     const addQuestion = () => {
         setQuestions([...questions, { questionText: '', answers: ['', '', '', ''], correctAnswerIndex: 0 }]);
     };
+
+    const deleteQuiz = async () => {
+        const confirmDelete = window.confirm("Tem certeza de que deseja excluir este quiz?");
+        if (confirmDelete) {
+            try {
+                const quizDocRef = doc(db, 'quizzes', quizId);
+                await deleteDoc(quizDocRef);
+                alert('Quiz excluído com sucesso.');
+                navigate('/'); // Navega para a página inicial após excluir o quiz
+            } catch (error) {
+                console.error('Erro ao excluir quiz:', error);
+                alert('Erro ao excluir quiz.');
+            }
+        }
+    };
+    
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -165,6 +181,13 @@ export default function EditQuiz() {
                             className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
                         >
                             Salvar Alterações
+                        </button>
+                        <button
+                            type='button'
+                            onClick={deleteQuiz}
+                            className="px-4 py-2 bg-red-500 text-white rounded hover:bg-blue-600"
+                        >
+                            Excluir Quiz
                         </button>
                     </div>
                 </form>
