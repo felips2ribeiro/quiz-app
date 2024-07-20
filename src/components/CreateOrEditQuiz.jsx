@@ -11,13 +11,12 @@ export default function CreateOrEditQuiz({ creatorEmail }) {
     const { email } = useEmail();
     const navigate = useNavigate(); // Cria a instância do hook useNavigate
     const { quizId } = useParams(); // Pega o quizId da URL
-
+    console.log(email)
     useEffect(() => {
         const fetchQuiz = async () => {
             try {
                 const quizDocRef = doc(db, 'quizzes', quizId);
                 const quizDoc = await getDocs(quizDocRef);
-                console.log(quizDoc)
                 if (quizDoc.exists()) {
                     const quizData = quizDoc.data();
                     setQuizTitle(quizData.title);
@@ -100,7 +99,7 @@ export default function CreateOrEditQuiz({ creatorEmail }) {
         <section className='p-20'>
             <div className="bg-white p-10 rounded-xl shadow-lg relative">
                 <button
-                    onClick={() => navigate(-1)} // Navega para a página anterior
+                    onClick={() => navigate("/")} // Navega para a página anterior
                     className="absolute top-4 right-4 px-4 py-2 bg-gray-300 text-black rounded hover:bg-gray-400"
                 >
                     Voltar

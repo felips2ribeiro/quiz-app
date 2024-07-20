@@ -5,7 +5,7 @@ const EmailContext = createContext();
 
 export function EmailProvider({ children }) {
     const [email, setEmail] = useState('');
-
+    console.log(email)
     return (
         <EmailContext.Provider value={{ email, setEmail }}>
             {children}

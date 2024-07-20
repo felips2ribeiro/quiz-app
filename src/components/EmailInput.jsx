@@ -1,12 +1,13 @@
+// src/components/EmailInput.jsx
 import React, { useState } from 'react';
-import { db, collection, addDoc, query, where, getDocs} from './firebase/firebaseConfig';
+import { db, collection, addDoc, query, where, getDocs } from './firebase/firebaseConfig';
 import { useNavigate } from 'react-router-dom';
+import { useEmail } from '../context/EmailContext';
 
-export default function EmailInput({ onEmailTyped }) {
+export default function EmailInput() {
   const [email, setEmail] = useState('');
   const [isValid, setIsValid] = useState(null);
-  const navigate = useNavigate();
-
+  const { setEmail: setEmailContext } = useEmail(); // Obtemos a função para definir o email no contexto
 
   const checkIfEmailExists = async (email) => {
     const q = query(collection(db, 'users'), where('email', '==', email));
@@ -32,16 +33,16 @@ export default function EmailInput({ onEmailTyped }) {
     e.preventDefault();
     if (isValid) {
       try {
-        const exists = await checkIfEmailExists(email)
-        if(exists) {
-            onEmailTyped(email)
-        }else{
-            await addDoc(collection(db, 'users'), { email });
-            onEmailTyped(email);
+        const exists = await checkIfEmailExists(email);
+        if (exists) {
+          setEmailContext(email); // Define o email no contexto
+        } else {
+          await addDoc(collection(db, 'users'), { email });
+          setEmailContext(email); // Define o email no contexto
         }
+
       } catch (error) {
         console.error("Erro ao adicionar o e-mail: ", error);
-
       }
     }
   };
