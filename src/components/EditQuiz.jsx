@@ -70,9 +70,8 @@ export default function EditQuiz() {
                 title: quizTitle,
                 description: quizDescription,
                 questions,
-                updatedAt: new Date()
+                createdAt: new Date()
             });
-            alert('Quiz atualizado com sucesso!');
             navigate('/'); // Navega para a página inicial após atualizar o quiz
         } catch (error) {
             console.error('Erro ao salvar quiz:', error);
@@ -128,7 +127,7 @@ export default function EditQuiz() {
                             {question.answers.map((answer, answerIndex) => (
                                 <div key={answerIndex} className="mb-2 flex items-center gap-10 mt-5">
                                     <label htmlFor={`answer-${questionIndex}-${answerIndex}`} className="block whitespace-nowrap text-sm font-medium text-gray-700">
-                                        Resposta {answerIndex + 1}
+                                        {['a', 'b', 'c', 'd'][answerIndex]}) {/* Adiciona o ')' após a letra */}
                                     </label>
                                     <input
                                         id={`answer-${questionIndex}-${answerIndex}`}
@@ -138,7 +137,7 @@ export default function EditQuiz() {
                                         className="p-2 border border-gray-300 rounded-lg w-full"
                                         required
                                     />
-                                    <div className="mt-2 flex">
+                                    <div className="mt-2 flex items-center">
                                         <input
                                             type="radio"
                                             name={`correct-answer-${questionIndex}`}

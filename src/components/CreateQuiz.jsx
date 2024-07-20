@@ -103,7 +103,7 @@ export default function CreateQuiz() {
                             {question.answers.map((answer, answerIndex) => (
                                 <div key={answerIndex} className="mb-2 flex items-center gap-10 mt-5">
                                     <label htmlFor={`answer-${questionIndex}-${answerIndex}`} className="block whitespace-nowrap text-sm font-medium text-gray-700">
-                                        Resposta {answerIndex + 1}
+                                        {['a', 'b', 'c', 'd'][answerIndex]}) {/* Adiciona o ')' após a letra */}
                                     </label>
                                     <input
                                         id={`answer-${questionIndex}-${answerIndex}`}
