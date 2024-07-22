@@ -36,6 +36,11 @@ export default function CreateQuiz() {
         setQuestions([...questions, { questionText: '', answers: ['', '', '', ''], correctAnswerIndex: 0 }]);
     };
 
+    const removeQuestion = (index) => {
+        const newQuestions = questions.filter((_, i) => i !== index);
+        setQuestions(newQuestions);
+    }
+
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
@@ -56,35 +61,20 @@ export default function CreateQuiz() {
     };
 
     return (
-        <section className='p-20'>
-            <div className="bg-white p-10 rounded-xl shadow-lg relative">
-                <button
-                    onClick={() => navigate("/")} // Navega para a página inicial
-                    className="absolute top-4 right-4 px-4 py-2 bg-gray-300 text-black rounded hover:bg-gray-400"
-                >
-                    Voltar
-                </button>
-                <h1 className="text-3xl mb-4">Criar Quiz</h1>
+        <section className='flex items-center justify-center'>
+            <div className="flex flex-col bg-white p-10 rounded-xl shadow-lg">
+                <div className='flex flex-row-reverse justify-between'>
+                    <button onClick={() => navigate("/")} className="">Voltar</button>
+                    <h1 className="text-3xl mb-4">Criar Quiz</h1>
+                </div>
                 <form onSubmit={handleSubmit}>
                     <div className="mb-4">
                         <label htmlFor="title" className="block mb-2 text-sm font-medium text-gray-700">Título do Quiz</label>
-                        <input
-                            id="title"
-                            type="text"
-                            value={quizTitle}
-                            onChange={handleTitleChange}
-                            className="p-2 border border-gray-300 rounded-lg w-full"
-                            required
-                        />
+                        <input id="title"type="text" value={quizTitle}onChange={handleTitleChange}className="p-2 border border-gray-300 rounded-lg w-full" required/>
                     </div>
                     <div className="mb-4">
                         <label htmlFor="description" className="block mb-2 text-sm font-medium text-gray-700">Descrição do Quiz</label>
-                        <textarea
-                            id="description"
-                            value={quizDescription}
-                            onChange={handleDescriptionChange}
-                            className="p-2 border border-gray-300 rounded-lg w-full resize-none"
-                        />
+                        <textarea id="description" value={quizDescription} onChange={handleDescriptionChange} className="p-2 border border-gray-300 rounded-lg w-full resize-none"/>
                     </div>
                     {questions.map((question, questionIndex) => (
                         <div key={questionIndex} className="mb-4">
@@ -103,45 +93,24 @@ export default function CreateQuiz() {
                             {question.answers.map((answer, answerIndex) => (
                                 <div key={answerIndex} className="mb-2 flex items-center gap-10 mt-5">
                                     <label htmlFor={`answer-${questionIndex}-${answerIndex}`} className="block whitespace-nowrap text-sm font-medium text-gray-700">
-                                        {['a', 'b', 'c', 'd'][answerIndex]}) {/* Adiciona o ')' após a letra */}
-                                    </label>
-                                    <input
-                                        id={`answer-${questionIndex}-${answerIndex}`}
-                                        type="text"
-                                        value={answer}
-                                        onChange={(e) => handleAnswerChange(questionIndex, answerIndex, e)}
-                                        className="p-2 border border-gray-300 rounded-lg w-full"
-                                        required
-                                    />
+                                        {['a', 'b', 'c', 'd'][answerIndex]})</label>
+                                    <input id={`answer-${questionIndex}-${answerIndex}`} type="text" value={answer} onChange={(e) => handleAnswerChange(questionIndex, answerIndex, e)}className="p-2 border border-gray-300 rounded-lg w-full"required/>
                                     <div className="mt-2 flex">
-                                        <input
-                                            type="radio"
-                                            name={`correct-answer-${questionIndex}`}
-                                            value={answerIndex}
-                                            checked={question.correctAnswerIndex === answerIndex}
-                                            onChange={(e) => handleCorrectAnswerChange(questionIndex, e)}
-                                            className="mr-2"
-                                        />
+                                        <input type="radio"name={`correct-answer-${questionIndex}`}value={answerIndex}checked={question.correctAnswerIndex === answerIndex}onChange={(e) => handleCorrectAnswerChange(questionIndex, e)}className="mr-2"/>
                                         <span className='whitespace-nowrap'>Resposta Correta</span>
                                     </div>
+                                    
                                 </div>
+                                
                             ))}
+                            <button type="button"onClick={() => removeQuestion(questionIndex)} className="px-4 py-2 bg-red-500 text-white rounded hover:bg-red-600">Deletar Pergunta</button>
                         </div>
+                        
                     ))}
-                    <div className='flex gap-10 mb-4'>
-                        <button
-                            type="button"
-                            onClick={addQuestion}
-                            className="px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600"
-                        >
-                            Adicionar Pergunta
-                        </button>
-                        <button
-                            type="submit"
-                            className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
-                        >
-                            Salvar Quiz
-                        </button>
+                    <div className='flex gap-2 justify-between'>
+                        <button type="button"onClick={addQuestion}className="px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600">Adicionar Pergunta</button>
+                        
+                        <button type="submit"className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600">Salvar Quiz</button>
                     </div>
                 </form>
             </div>

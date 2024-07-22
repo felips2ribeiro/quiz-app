@@ -96,7 +96,7 @@ export default function EditQuiz() {
     };
 
     return (
-        <section className='p-20'>
+        <section className='p-20 '>
             <div className="bg-white p-10 rounded-xl shadow-lg relative">
                 <button
                     onClick={() => navigate("/")} // Navega para a página inicial
