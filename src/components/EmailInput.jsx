@@ -28,7 +28,7 @@ export default function EmailInput() {
     setEmail(newEmail);
     validateEmail(newEmail);
   };
-
+  
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (isValid) {
@@ -46,7 +46,7 @@ export default function EmailInput() {
       }
     }
   };
-
+  
   return (
     <div className="w-full max-w-md bg-white p-10 rounded-xl shadow-lg">
       <form onSubmit={handleSubmit}>
