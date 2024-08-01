@@ -4,12 +4,12 @@ import { db, collection, addDoc, query, where, getDocs, doc } from './firebase/f
 import { useNavigate, useParams } from 'react-router-dom';
 import { useEmail } from '../context/EmailContext';
 
-export default function EmailInput( isParticipating ) {
+export default function EmailInput( {isParticipating, setIsEmailTyped} ) {
   const [email, setEmail] = useState('');
   const [isValid, setIsValid] = useState("");
   const { setEmail: setEmailContext } = useEmail();
   const { quizId } = useParams(); // Pega o quizId da URL // Obtemos a função para definir o email no contexto
-
+  
   const checkIfEmailExists = async (email) => {
     const q = query(collection(db, 'users'), where('email', '==', email));
     const querySnapshot = await getDocs(q);
@@ -32,31 +32,32 @@ export default function EmailInput( isParticipating ) {
   
   const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log()
     if (isValid) {
-      /*if (isParticipating){
+      if (isParticipating){
+        console.log('entrei como participante')
         try{
           const quizRef = doc(db, 'quizzes', quizId)
           const participantsRef = collection(quizRef, 'participants')
           await addDoc(participantsRef, {email})
-
+          setIsEmailTyped(true)
         }catch (error){
           console.error("Erro ao adicionar o e-mail do participante: ", error);
         }
-      }else{*/
+      }else{
         try {
           const exists = await checkIfEmailExists(email);
           if (exists) {
             setEmailContext(email); // Define o email no contexto
+            setIsEmailTyped(true)
           } else {
             await addDoc(collection(db, 'users'), { email });
             setEmailContext(email); // Define o email no contexto
+            setIsEmailTyped(true)
           }
-
         } catch (error) {
           console.error("Erro ao adicionar o e-mail: ", error);
       }
-    }
+    }}
   };
   
   return (

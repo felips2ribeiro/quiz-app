@@ -5,10 +5,6 @@ import Question from './Question'
 
 export default function Quiz() {
     const [isEmailTyped, setIsEmailTyped] = useState(false) 
-    const handleEmailTyped = () => { 
-      setIsEmailTyped(true)
-      console.log("entrei")
-    }
 
     return(
         <section className="relative h-screen bg-gray-100 flex items-center justify-center">
@@ -17,7 +13,7 @@ export default function Quiz() {
       </div>
       {!isEmailTyped && (
         <div className="relative z-10">
-          <EmailInput isParticipating = {true} />
+          <EmailInput isParticipating = {true} setIsEmailTyped = {setIsEmailTyped} />
         </div>
       )}
     </section>
