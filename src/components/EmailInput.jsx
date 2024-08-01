@@ -1,7 +1,7 @@
 // src/components/EmailInput.jsx
 import React, { useState } from 'react';
 import { db, collection, addDoc, query, where, getDocs, doc } from './firebase/firebaseConfig';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import { useEmail } from '../context/EmailContext';
 
 export default function EmailInput( {isParticipating, setIsEmailTyped} ) {
@@ -34,11 +34,11 @@ export default function EmailInput( {isParticipating, setIsEmailTyped} ) {
     e.preventDefault();
     if (isValid) {
       if (isParticipating){
-        console.log('entrei como participante')
         try{
           const quizRef = doc(db, 'quizzes', quizId)
           const participantsRef = collection(quizRef, 'participants')
-          await addDoc(participantsRef, {email})
+          //await addDoc(participantsRef, {email})
+          setEmailContext(email);
           setIsEmailTyped(true)
         }catch (error){
           console.error("Erro ao adicionar o e-mail do participante: ", error);
