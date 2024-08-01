@@ -1,43 +1,55 @@
-import { useEffect, useState } from "react"
-import { db, collection, query, where, getDocs, doc, getDoc } from './firebase/firebaseConfig';
+import { useEffect, useState } from "react";
+import { db, doc, getDoc } from './firebase/firebaseConfig';
 import { useParams } from 'react-router-dom';
 
-export default function Question( {questionIndex} ) {
-    const { quizId } = useParams();
-    const [answers, setAnswers] = useState([])
-    const [quizData, setQuizData] = useState([])
+export default function Question({ questionIndex }) {
+  const { quizId } = useParams();
+  const [questions, setQuestions] = useState([]);
+  const [loading, setLoading] = useState(true);
 
-    useEffect(()=>{
-        const fetchAnswers = async () => {
-            const quizRef = doc(db, 'quizzes', quizId)
-            const quizDoc = await getDoc(quizRef)
-            if (quizDoc.exists()){
-                try{
-                    const quizData = quizDoc.data()
-                    const questions = quizData.questions
-                    setAnswers(questions[questionIndex].answers)
-                    console.log(answers)
-                }
-                catch(error){
-                    console.error("Erro ao buscar quizzes: ", error);
-                }
-            }
+  useEffect(() => {
+    const fetchAnswers = async () => {
+      try {
+        const quizRef = doc(db, 'quizzes', quizId);
+        const quizDoc = await getDoc(quizRef);
+        if (quizDoc.exists()) {
+          const quizData = quizDoc.data();
+          const fetchedQuestions = quizData.questions;
+          setQuestions(fetchedQuestions);
+        } else {
+          console.error("O documento do quiz não existe.");
         }
-        fetchAnswers();
-    }, [])
+      } catch (error) {
+        console.error("Erro ao buscar quizzes: ", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchAnswers();
+  }, [quizId]);
 
-    return (
-        <>
-            <h2>{answers.questionText}</h2>
-            <ul>
-                {answers.map((answer, index)=>{
-                        <li key={index} className="flex items-center gap-10 mb-4">
-                        <div className='flex gap-10 items-center'>
-                            <h2 className="text-3xl">{answers.index}</h2>
-                        </div>
-                        </li>
-                })}
-            </ul>
-        </>
-    )
+  useEffect(() => {
+    console.log(questions);
+  }, [questions]);
+
+  if (loading) {
+    return <div className='p-20'><p>Carregando Quizzes...</p></div>;
+  }
+
+  return (
+    <div>
+      {questions.length > 0 ? (
+        <div>
+          <h1>{questions[questionIndex]?.questionText}</h1>
+          <ul>
+            {questions[questionIndex]?.answers.map((answer, ansIndex) => (
+              <li key={ansIndex}>{answer}</li>
+            ))}
+          </ul>
+        </div>
+      ) : (
+        <p>Nenhuma pergunta encontrada.</p>
+      )}
+    </div>
+  );
 }

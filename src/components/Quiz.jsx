@@ -10,27 +10,33 @@ export default function Quiz() {
     const [isEmailTyped, setIsEmailTyped] = useState(false) 
     const { email } = useEmail(); // Obtemos o email do contexto
     const { quizId } = useParams();
-    const [questions, setQuestions] = useState([])
     const [quizData, setQuizData] = useState([])
-    const [loading, setLoading] = useState(false)
+    const [loading, setLoading] = useState(true)
+    const [questionIndex, setQuestionIndex] = useState(0)
 
-    useEffect(()=>{
+    useEffect(() => {
       const fetchQuestions = async () => {
-          const quizRef = doc(db, 'quizzes', quizId)
-          const quizDoc = await getDoc(quizRef)
-          if (quizDoc.exists()){
-              try{
-                  const quizData = quizDoc.data()
-                  setQuizData(quizData)
-                  setQuestions(quizData.questions)
-              }
-              catch(error){
-                  console.error("Erro ao buscar quizzes: ", error);
-              }
+        try {
+          const quizRef = doc(db, 'quizzes', quizId);
+          const quizDoc = await getDoc(quizRef);
+          if (quizDoc.exists()) {
+            const quizData = quizDoc.data();
+            setQuizData(quizData);
+            setLoading(false);
+          } else {
+            console.error("O documento do quiz não existe.");
           }
-      }
+        } catch (error) {
+          console.error("Erro ao buscar quizzes: ", error);
+        }
+      };
+  
       fetchQuestions();
-  }, [])
+    }, [db, quizId]);
+
+    if (loading) return (
+          <div className='p-20'><p>Carregando Quizzes...</p></div>
+  );
 
     return(
         <section className="relative h-screen bg-gray-100 flex items-center justify-center">
@@ -40,8 +46,8 @@ export default function Quiz() {
                 <h1 className="text-3xl mb-4">{quizData.title}</h1>
               </div>
               <hr />
-                <div className='p-20'>
-                  <Question questionIndex={0}/>
+                <div className='p-2'>
+                  <Question questionIndex={questionIndex}/>
                 </div>
             </div>
       </div>
