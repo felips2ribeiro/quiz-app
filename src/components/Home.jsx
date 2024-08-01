@@ -17,10 +17,6 @@ export default function Home() {
     }
   }, [email]);
 
-  const handleEmailTyped = (email) => {
-    setCreatorEmail(email);
-    setIsEmailTyped(true);
-  };
 
   return (
     <section className="relative h-screen bg-gray-100 flex items-center justify-center">
@@ -29,7 +25,7 @@ export default function Home() {
       </div>
       {!isEmailTyped && (
         <div className="relative z-10">
-          <EmailInput onEmailTyped={handleEmailTyped} />
+          <EmailInput isParticipating ={false}/>
         </div>
       )}
     </section>

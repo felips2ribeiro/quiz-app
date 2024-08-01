@@ -1,13 +1,14 @@
 // src/components/EmailInput.jsx
 import React, { useState } from 'react';
-import { db, collection, addDoc, query, where, getDocs } from './firebase/firebaseConfig';
-import { useNavigate } from 'react-router-dom';
+import { db, collection, addDoc, query, where, getDocs, doc } from './firebase/firebaseConfig';
+import { useNavigate, useParams } from 'react-router-dom';
 import { useEmail } from '../context/EmailContext';
 
-export default function EmailInput() {
+export default function EmailInput( isParticipating ) {
   const [email, setEmail] = useState('');
-  const [isValid, setIsValid] = useState(null);
-  const { setEmail: setEmailContext } = useEmail(); // Obtemos a função para definir o email no contexto
+  const [isValid, setIsValid] = useState("");
+  const { setEmail: setEmailContext } = useEmail();
+  const { quizId } = useParams(); // Pega o quizId da URL // Obtemos a função para definir o email no contexto
 
   const checkIfEmailExists = async (email) => {
     const q = query(collection(db, 'users'), where('email', '==', email));
@@ -31,18 +32,29 @@ export default function EmailInput() {
   
   const handleSubmit = async (e) => {
     e.preventDefault();
+    console.log()
     if (isValid) {
-      try {
-        const exists = await checkIfEmailExists(email);
-        if (exists) {
-          setEmailContext(email); // Define o email no contexto
-        } else {
-          await addDoc(collection(db, 'users'), { email });
-          setEmailContext(email); // Define o email no contexto
-        }
+      /*if (isParticipating){
+        try{
+          const quizRef = doc(db, 'quizzes', quizId)
+          const participantsRef = collection(quizRef, 'participants')
+          await addDoc(participantsRef, {email})
 
-      } catch (error) {
-        console.error("Erro ao adicionar o e-mail: ", error);
+        }catch (error){
+          console.error("Erro ao adicionar o e-mail do participante: ", error);
+        }
+      }else{*/
+        try {
+          const exists = await checkIfEmailExists(email);
+          if (exists) {
+            setEmailContext(email); // Define o email no contexto
+          } else {
+            await addDoc(collection(db, 'users'), { email });
+            setEmailContext(email); // Define o email no contexto
+          }
+
+        } catch (error) {
+          console.error("Erro ao adicionar o e-mail: ", error);
       }
     }
   };
@@ -53,7 +65,7 @@ export default function EmailInput() {
         <label
           htmlFor="email"
           className={`block mb-2 text-black text-sm font-medium ${
-            isValid === false ? 'text-red-700' : 'text-green-700'
+            isValid === false ? 'text-red-700' : isValid === true ? 'text-green-700' : 'text-black'
           }`}
         >
           Digite seu e-mail
@@ -64,7 +76,7 @@ export default function EmailInput() {
               ? 'bg-red-50 border-red-500 text-red-900 placeholder-red-700 focus:ring-red-500 focus:border-red-500'
               : isValid === true
               ? 'bg-green-50 border-green-500 text-green-900 placeholder-green-700 focus:ring-green-500 focus:border-green-500'
-              : 'border-gray-300'
+              : 'border-gray-300' 
           }`}
           name="email"
           required
