@@ -36,6 +36,10 @@ export default function Question({ questionIndex }) {
     return <div className='p-20'><p>Carregando Quizzes...</p></div>;
   }
 
+  const handleAnswer = ( selectedOption ) => {
+    
+  }
+
   return (
     <div>
       {questions.length > 0 ? (
@@ -43,7 +47,9 @@ export default function Question({ questionIndex }) {
           <h1>{questions[questionIndex]?.questionText}</h1>
           <ul>
             {questions[questionIndex]?.answers.map((answer, ansIndex) => (
-              <li key={ansIndex}>{answer}</li>
+              <div className="flex gap-2">
+                <button key={ansIndex} onClick={handleAnswer} className="bg-transparent hover:bg-blue-500 text-blue-700 font-semibold hover:text-white py-2 px-4 border border-blue-500 hover:border-transparent rounded w-full">{answer}</button>
+              </div> 
             ))}
           </ul>
         </div>

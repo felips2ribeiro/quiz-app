@@ -42,10 +42,9 @@ export default function Quiz() {
         <section className="relative h-screen bg-gray-100 flex items-center justify-center">
         <div className={`absolute inset-0 ${isEmailTyped ? 'blur-none' : 'blur-xl'} flex items-center justify-center`}>
           <div className="bg-white p-10 rounded-xl shadow-lg">
-              <div className='flex justify-between items-center mb-10 gap-10'>
-                <h1 className="text-3xl mb-4">{quizData.title}</h1>
+              <div className='flex justify-between items-centergap-10'>
+                <h1 className="text-3xl">{quizData.title}</h1>
               </div>
-              <hr />
                 <div className='p-2'>
                   <Question questionIndex={questionIndex}/>
                 </div>
